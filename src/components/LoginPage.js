@@ -8,10 +8,9 @@ import {
   useLocale,
   useSetLocale,
   useTranslate,
-  PasswordInput,
   TextInput,
 } from "react-admin";
-import { Form, useForm } from "react-final-form";
+import { Form } from "react-final-form";
 import {
   Avatar,
   Button,
@@ -82,6 +81,7 @@ const LoginPage = ({ theme }) => {
   const setLocale = useSetLocale();
   const translate = useTranslate();
   const base_url = localStorage.getItem("base_url");
+  
 
   const renderInput = ({
     meta: { touched, error } = {},
@@ -99,12 +99,6 @@ const LoginPage = ({ theme }) => {
 
   const validate = values => {
     const errors = {};
-    if (!values.username) {
-      errors.username = translate("ra.validation.required");
-    }
-    if (!values.password) {
-      errors.password = translate("ra.validation.required");
-    }
     if (!values.base_url) {
       errors.base_url = translate("ra.validation.required");
     } else {
@@ -134,36 +128,24 @@ const LoginPage = ({ theme }) => {
     });
   };
 
-  const extractHomeServer = username => {
-    const usernameRegex = /@[a-zA-Z0-9._=\-/]+:([a-zA-Z0-9\-.]+\.[a-zA-Z]+)/;
-    if (!username) return null;
-    const res = username.match(usernameRegex);
-    if (res) return res[1];
-    return null;
-  };
+  const url = window.location;
+
+  var loginToken = new URLSearchParams(url.search).get('loginToken');
+  
+  if (loginToken == null ){
+    loginToken = "Login Token"
+  }
+  
+  else{
+    localStorage.setItem("login_token", loginToken);
+    loginToken = localStorage.getItem("login_token").substring(0,35)+"...";
+  }
+
 
   const UserData = ({ formData }) => {
-    const form = useForm();
     const [serverVersion, setServerVersion] = useState("");
 
-    const handleUsernameChange = _ => {
-      if (formData.base_url) return;
-      // check if username is a full qualified userId then set base_url accordially
-      const home_server = extractHomeServer(formData.username);
-      const wellKnownUrl = `https://${home_server}/.well-known/matrix/client`;
-      if (home_server) {
-        // fetch .well-known entry to get base_url
-        fetchUtils
-          .fetchJson(wellKnownUrl, { method: "GET" })
-          .then(({ json }) => {
-            form.change("base_url", json["m.homeserver"].base_url);
-          })
-          .catch(_ => {
-            // if there is no .well-known entry, try the home server name
-            form.change("base_url", `https://${home_server}`);
-          });
-      }
-    };
+
 
     useEffect(
       _ => {
@@ -193,29 +175,21 @@ const LoginPage = ({ theme }) => {
       <div>
         <div className={classes.input}>
           <TextInput
-            autoFocus
-            name="username"
+            name="loginToken"
+            value="TestTest"
             component={renderInput}
-            label={translate("ra.auth.username")}
-            disabled={loading}
-            onBlur={handleUsernameChange}
+            id="login_Token"
+            label={loginToken}
+            disabled
             fullWidth
           />
         </div>
-        <div className={classes.input}>
-          <PasswordInput
-            name="password"
-            component={renderInput}
-            label={translate("ra.auth.password")}
-            type="password"
-            disabled={loading}
-            fullWidth
-          />
-        </div>
+      
         <div className={classes.input}>
           <TextInput
             name="base_url"
             component={renderInput}
+            id="base_url"
             label={translate("synapseadmin.auth.base_url")}
             disabled={loading}
             fullWidth
@@ -274,6 +248,26 @@ const LoginPage = ({ theme }) => {
                   {translate("ra.auth.sign_in")}
                 </Button>
               </CardActions>
+            
+              <CardActions className={classes.actions}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  disabled={loading}
+                  className={classes.button}
+                  fullWidth
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.setItem("base_url", document.getElementById("base_url").value);
+                    window.location.href= document.getElementById("base_url").value + '/_matrix/client/r0/login/sso/redirect?redirectUrl=http://localhost:3000/#/';
+                    }}
+                >
+                  {loading && <CircularProgress size={25} thickness={2} />}
+                  {"Get Token via SSO"}
+                </Button>
+              </CardActions>
+
             </Card>
             <Notification />
           </div>

@@ -2,15 +2,17 @@ import { fetchUtils } from "react-admin";
 
 const authProvider = {
   // called when the user attempts to log in
-  login: ({ base_url, username, password }) => {
+  
+  login: ({ base_url }) => {
+    const url = window.location;
+    const loginToken = new URLSearchParams(url.search).get('loginToken');
     console.log("login ");
+    
     const options = {
       method: "POST",
       body: JSON.stringify({
-        type: "m.login.password",
-        user: username,
-        password: password,
-        initial_device_display_name: "Synapse Admin",
+        type: "m.login.token",
+        token: loginToken
       }),
     };
 
@@ -23,7 +25,6 @@ const authProvider = {
     const login_api_url = decoded_base_url + "/_matrix/client/r0/login";
 
     return fetchUtils.fetchJson(login_api_url, options).then(({ json }) => {
-      localStorage.setItem("home_server", json.home_server);
       localStorage.setItem("user_id", json.user_id);
       localStorage.setItem("access_token", json.access_token);
       localStorage.setItem("device_id", json.device_id);
@@ -35,20 +36,26 @@ const authProvider = {
 
     const logout_api_url =
       localStorage.getItem("base_url") + "/_matrix/client/r0/logout";
-    const token = localStorage.getItem("access_token");
+    const access_token = localStorage.getItem("access_token");
 
     const options = {
       method: "POST",
       user: {
         authenticated: true,
-        token: `Bearer ${token}`,
+        token: `Bearer ${access_token}`,
       },
     };
 
-    return fetchUtils.fetchJson(logout_api_url, options).then(({ json }) => {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("device_id");
-    });
+    if (typeof access_token === "string") {
+      fetchUtils.fetchJson(logout_api_url, options).then(({ json }) => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("device_id");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("base_url");
+        localStorage.removeItem("login_token");
+      });
+    }
+    return Promise.resolve();
   },
   // called when the API returns an error
   checkError: ({ status }) => {
@@ -62,7 +69,7 @@ const authProvider = {
   checkAuth: () => {
     const access_token = localStorage.getItem("access_token");
     console.log("checkAuth " + access_token);
-    return typeof access_token == "string"
+    return typeof access_token === "string"
       ? Promise.resolve()
       : Promise.reject();
   },
