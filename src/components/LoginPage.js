@@ -128,6 +128,11 @@ const LoginPage = ({ theme }) => {
     });
   };
 
+  const getToken = () => {
+    localStorage.setItem("base_url", document.getElementById("base_url").value);
+    window.location.href= document.getElementById("base_url").value + '/_matrix/client/r0/login/sso/redirect?redirectUrl=http://localhost:3000/#/';
+  }
+
   const url = window.location;
 
   var loginToken = new URLSearchParams(url.search).get('loginToken');
@@ -257,10 +262,8 @@ const LoginPage = ({ theme }) => {
                   disabled={loading}
                   className={classes.button}
                   fullWidth
-                  onClick={(e) => {
-                    e.preventDefault();
-                    localStorage.setItem("base_url", document.getElementById("base_url").value);
-                    window.location.href= document.getElementById("base_url").value + '/_matrix/client/r0/login/sso/redirect?redirectUrl=http://localhost:3000/#/';
+                  onClick={() => {
+                    getToken();
                     }}
                 >
                   {loading && <CircularProgress size={25} thickness={2} />}

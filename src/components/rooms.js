@@ -89,6 +89,7 @@ const RoomShowActions = ({ basePath, data, resource }) => {
       <Button
         onClick={() => {
           
+          
         }}
         label="Become Room Admin"
       >
