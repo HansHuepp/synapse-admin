@@ -71,6 +71,11 @@ const resourceMap = {
       body: { block: false },
       method: "POST",
     }),
+    admin: params => ({
+      endpoint: `/_synapse/admin/v1/rooms/${params.id}/make_room_admin`,
+      body: { block: false },
+      method: "POST",
+    }),
   },
   reports: {
     path: "/_synapse/admin/v1/event_reports",

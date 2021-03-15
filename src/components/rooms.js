@@ -5,6 +5,7 @@ import {
   BulkDeleteWithConfirmButton,
   Datagrid,
   DeleteButton,
+  Button,
   Filter,
   List,
   Pagination,
@@ -19,6 +20,7 @@ import {
   TopToolbar,
   useTranslate,
 } from "react-admin";
+import GetAppIcon from "@material-ui/icons/SupervisorAccount";
 import get from "lodash/get";
 import { Tooltip, Typography, Chip } from "@material-ui/core";
 import HttpsIcon from "@material-ui/icons/Https";
@@ -84,6 +86,14 @@ const RoomShowActions = ({ basePath, data, resource }) => {
         confirmTitle={translate("synapseadmin.rooms.delete.title")}
         confirmContent={translate("synapseadmin.rooms.delete.message")}
       />
+      <Button
+        onClick={() => {
+          
+        }}
+        label="Become Room Admin"
+      >
+        <GetAppIcon style={{ fontSize: "20" }} />
+      </Button>
     </TopToolbar>
   );
 };
