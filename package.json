@@ -18,13 +18,8 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
-    "html-webpack-plugin": "^4.0.0-beta.11",
     "jest-fetch-mock": "^3.0.3",
-    "prettier": "^2.0.0",
-    "webpack": "^4.42.0",
-    "webpack-cli": "^4.5.0",
-    "webpack-dev-middleware": "^3.7.3",
-    "webpack-dev-server": "^3.10.2"
+    "prettier": "^2.0.0"
   },
   "dependencies": {
     "papaparse": "^5.2.0",
@@ -33,7 +28,7 @@
     "react": "^16.13.1",
     "react-admin": "^3.10.0",
     "react-dom": "^16.14.0",
-    "react-scripts": "^3.4.0"
+    "react-scripts": "3.4.0"
   },
   "scripts": {
     "start": "REACT_APP_VERSION=$(git describe --tags) react-scripts start",
