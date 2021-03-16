@@ -9215,10 +9215,10 @@
     "tiny-invariant" "^1.0.2"
     "tiny-warning" "^1.0.0"
 
-"react-scripts@^3.4.4":
+"react-scripts@3.4.0":
   "integrity" "sha512-7J7GZyF/QvZkKAZLneiOIhHozvOMHey7hO9cdO9u68jjhGZlI8hDdOm6UyuHofn6Ajc9Uji5I6Psm/nKNuWdyw=="
-  "resolved" "https://registry.npmjs.org/react-scripts/-/react-scripts-3.4.4.tgz"
-  "version" "3.4.4"
+  "resolved" "https://registry.npmjs.org/react-scripts/-/react-scripts-3.4.0.tgz"
+  "version" "3.4.0"
   dependencies:
     "@babel/core" "7.9.0"
     "@svgr/webpack" "4.3.3"
