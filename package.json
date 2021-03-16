@@ -22,6 +22,7 @@
     "prettier": "^2.0.0"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "papaparse": "^5.2.0",
     "prop-types": "^15.7.2",
     "ra-language-german": "^2.1.2",
@@ -31,7 +32,7 @@
     "react-scripts": "^3.4.4"
   },
   "scripts": {
-    "start": "REACT_APP_VERSION=$(git describe --tags) react-scripts start",
+    "start": "REACT_APP_VERSION=$(git describe --tags) CI=true react-scripts start",
     "build": "REACT_APP_VERSION=$(git describe --tags) react-scripts build",
     "fix:other": "yarn prettier --write",
     "fix:code": "yarn test:lint --fix",
