@@ -130,7 +130,7 @@ const LoginPage = ({ theme }) => {
 
   const getToken = () => {
     localStorage.setItem("base_url", document.getElementById("base_url").value);
-    window.location.href= document.getElementById("base_url").value + '/_matrix/client/r0/login/sso/redirect?redirectUrl=http://synapse-admin-git-admin-ui.digitalhealth02-07bd1274f875043bda28e1ec77511bd2-0000.eu-de.containers.appdomain.cloud/#/';
+    window.location.href= document.getElementById("base_url").value + '/_matrix/client/r0/login/sso/redirect?redirectUrl=https://synapse-admin.ghh.unimedizin-mainz.de/#/';
   }
 
   const url = window.location;
